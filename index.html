@@ -1,0 +1,874 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b1020" />
+  <title>Blog • Final da Copa do Mundo — Relato Presencial</title>
+  <style>
+    :root{
+      --bg:#070a14;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.10);
+      --text:#eaf0ff;
+      --muted:rgba(234,240,255,.72);
+      --brand1:#00d4ff;
+      --brand2:#ff2d55;
+      --brand3:#7c3aed;
+      --ok:#22c55e;
+      --warn:#f59e0b;
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --radius: 16px;
+      --radius2: 26px;
+      --ring: 0 0 0 3px rgba(0,212,255,.22);
+      --grid: rgba(255,255,255,.06);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background:
+        radial-gradient(1100px 600px at 10% -5%, rgba(0,212,255,.18), transparent 60%),
+        radial-gradient(900px 500px at 95% 15%, rgba(255,45,85,.14), transparent 60%),
+        radial-gradient(900px 700px at 60% 110%, rgba(124,58,237,.14), transparent 55%),
+        linear-gradient(180deg, #060912 0%, #070a14 55%, #050713 100%);
+      color:var(--text);
+      overflow-x:hidden;
+    }
+
+    .grid-bg{
+      position:fixed; inset:0;
+      background-image:
+        linear-gradient(to right, var(--grid) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(700px 450px at 40% 25%, black 0%, transparent 70%);
+      pointer-events:none;
+      opacity:.7;
+      z-index:0;
+    }
+
+    .confetti{
+      position:fixed; inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      z-index:0;
+    }
+    .confetti i{
+      position:absolute;
+      width:10px; height:14px;
+      border-radius: 3px;
+      background: linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,0));
+      opacity:.9;
+      transform: translateY(-120px) rotate(0deg);
+      animation: fall var(--dur) linear infinite;
+      filter: drop-shadow(0 12px 24px rgba(0,0,0,.35));
+    }
+    @keyframes fall{
+      0%{ transform: translateY(-120px) translateX(0) rotate(0deg); }
+      100%{ transform: translateY(120vh) translateX(var(--drift)) rotate(360deg); }
+    }
+
+    .wrap{position:relative; z-index:1; width:min(1120px, 92vw); margin:0 auto; padding: 22px 0 70px;}
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding: 18px 0 10px;
+    }
+    .brand{display:flex; align-items:center; gap:12px; user-select:none}
+    .logo{
+      width:46px; height:46px;
+      border-radius: 14px;
+      background:
+        radial-gradient(16px 16px at 30% 30%, rgba(255,255,255,.55), transparent 55%),
+        conic-gradient(from 200deg, var(--brand1), var(--brand2), var(--brand3), var(--brand1));
+      box-shadow: 0 18px 45px rgba(0,212,255,.18);
+      position:relative;
+      overflow:hidden;
+    }
+    .logo:after{
+      content:"";
+      position:absolute; inset:-40%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.45), transparent);
+      transform: rotate(18deg);
+      animation: sweep 3.2s ease-in-out infinite;
+      opacity:.9;
+    }
+    @keyframes sweep{
+      0%{ transform: translateX(-35%) rotate(18deg); opacity:.0; }
+      30%{ opacity:.95; }
+      70%{ opacity:.85; }
+      100%{ transform: translateX(35%) rotate(18deg); opacity:0; }
+    }
+    .brand h1{margin:0; font-size: 16px; letter-spacing:.3px}
+    .brand p{margin:2px 0 0; font-size:12.5px; color:var(--muted)}
+
+    nav{display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end}
+    .pill{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      padding: 10px 12px;
+      border-radius: 999px;
+      color: var(--text);
+      text-decoration:none;
+      font-weight:700;
+      font-size: 13px;
+      display:flex; align-items:center; gap:10px;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+      backdrop-filter: blur(10px);
+    }
+    .pill:hover{transform: translateY(-1px); background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.22)}
+
+    .hero{
+      margin-top: 6px;
+      border-radius: var(--radius2);
+      border:1px solid rgba(255,255,255,.12);
+      background:
+        radial-gradient(900px 340px at 15% 0%, rgba(0,212,255,.18), transparent 55%),
+        radial-gradient(800px 360px at 85% 10%, rgba(255,45,85,.14), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+
+    .hero:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(600px 220px at 10% 10%, rgba(0,212,255,.20), transparent 60%),
+        radial-gradient(500px 250px at 90% 15%, rgba(255,45,85,.16), transparent 60%);
+      opacity:.9;
+      pointer-events:none;
+    }
+
+    .hero-inner{
+      position:relative;
+      padding: 26px;
+      display:grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 18px;
+      align-items:start;
+    }
+    @media (max-width: 900px){.hero-inner{grid-template-columns:1fr}}
+
+    .kicker{display:flex; align-items:center; gap:10px; font-weight:900; text-transform:uppercase; letter-spacing:.35px; font-size:12.5px; color: rgba(234,240,255,.86)}
+    .dot{width:10px; height:10px; border-radius:50%; background: radial-gradient(circle at 30% 30%, white, rgba(255,255,255,.2)); box-shadow: 0 0 0 4px rgba(0,212,255,.15), 0 10px 30px rgba(0,212,255,.22); animation: pulse 2s ease-in-out infinite}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+
+    .title{
+      margin: 10px 0 0;
+      font-size: clamp(30px, 4.4vw, 52px);
+      line-height: 1.03;
+      letter-spacing: -.9px;
+    }
+    .gradient-text{
+      background: linear-gradient(90deg, var(--brand1), #9ef0ff 25%, var(--brand2), var(--brand3));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+
+    .meta{
+      margin-top: 12px;
+      display:flex; flex-wrap:wrap; gap:10px;
+      color: var(--muted);
+      font-weight:650;
+      font-size: 13px;
+    }
+    .meta .chip{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      padding: 8px 10px;
+      border-radius: 999px;
+    }
+
+    .hero-quote{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      border-radius: 18px;
+      padding: 14px;
+    }
+    .hero-quote h3{margin:0 0 8px; font-size: 14.5px; letter-spacing:-.2px}
+    .hero-quote p{margin:0; color: var(--muted); line-height:1.55; font-size: 13.8px}
+
+    main{margin-top: 18px; display:grid; grid-template-columns: 1fr 340px; gap: 18px; align-items:start;}
+    @media (max-width: 980px){main{grid-template-columns:1fr}}
+
+    .article{
+      border-radius: var(--radius2);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .article-inner{padding: 22px;}
+
+    h2{margin: 22px 0 10px; font-size: 20px; letter-spacing:-.25px}
+    h3{margin: 18px 0 8px; font-size: 16.5px; letter-spacing:-.15px}
+    p{color: rgba(234,240,255,.80); line-height:1.75; margin: 10px 0}
+
+    .img{
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.12);
+      background:
+        radial-gradient(500px 200px at 20% 0%, rgba(0,212,255,.18), transparent 60%),
+        radial-gradient(500px 260px at 85% 10%, rgba(255,45,85,.14), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      padding: 14px;
+      margin: 14px 0;
+      position:relative;
+      overflow:hidden;
+    }
+    .img .caption{color: var(--muted); font-size: 12.8px; margin-top: 10px}
+    .img .placeholder{
+      height: 220px;
+      border-radius: 14px;
+      border: 1px dashed rgba(255,255,255,.20);
+      background:
+        linear-gradient(90deg, rgba(0,212,255,.10), rgba(255,45,85,.08)),
+        radial-gradient(600px 240px at 40% 25%, rgba(255,255,255,.10), transparent 60%);
+      display:flex; align-items:center; justify-content:center;
+      text-align:center; padding: 14px;
+      font-weight:900;
+      letter-spacing:.2px;
+      color: rgba(234,240,255,.86);
+      text-shadow: 0 10px 30px rgba(0,0,0,.35);
+      animation: floaty 4.6s ease-in-out infinite;
+    }
+    @keyframes floaty{0%,100%{transform: translateY(0)}50%{transform: translateY(-7px)}}
+
+    .grid2{display:grid; grid-template-columns:1fr 1fr; gap: 12px;}
+    @media (max-width: 720px){.grid2{grid-template-columns:1fr}}
+
+    .callout{
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      padding: 14px;
+      margin: 14px 0;
+    }
+    .callout strong{color: rgba(234,240,255,.95)}
+
+    .stats{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 12px 0 2px;
+    }
+    @media (max-width: 720px){.stats{grid-template-columns:1fr}}
+
+    .stat{
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius: 18px;
+      padding: 14px;
+      position:relative;
+      overflow:hidden;
+    }
+    .stat:after{
+      content:"";
+      position:absolute; inset:-40%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
+      transform: rotate(18deg);
+      animation: shimmer 4.5s ease-in-out infinite;
+      opacity:.7;
+    }
+    @keyframes shimmer{0%{transform: translateX(-30%) rotate(18deg); opacity:0}30%{opacity:.9}70%{opacity:.8}100%{transform: translateX(30%) rotate(18deg); opacity:0}}
+    .stat .num{font-size: 22px; font-weight: 950; letter-spacing:-.45px; position:relative}
+    .stat .lbl{color: var(--muted); font-size: 12.8px; line-height:1.4; position:relative; margin-top:4px}
+
+    .timeline{margin-top: 8px;}
+    .timeline .item{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.045);
+      border-radius: 16px;
+      padding: 12px;
+      margin: 10px 0;
+      display:flex; gap:12px;
+      align-items:flex-start;
+    }
+    .timeline .time{
+      width: 64px;
+      flex: 0 0 64px;
+      font-weight: 950;
+      color: rgba(234,240,255,.92);
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      text-align:center;
+      padding: 8px 0;
+    }
+    .timeline .txt{color: rgba(234,240,255,.82); line-height:1.65; font-size: 14.2px}
+
+    .sidebar{
+      border-radius: var(--radius2);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:sticky;
+      top: 18px;
+    }
+    @media (max-width: 980px){.sidebar{position:relative; top:auto}}
+
+    .side-inner{padding: 18px}
+    .side-title{margin:0 0 12px; font-size: 14.5px; color: rgba(234,240,255,.92); letter-spacing:-.15px}
+
+    .toc a{
+      display:block;
+      padding: 10px 10px;
+      border-radius: 14px;
+      text-decoration:none;
+      color: rgba(234,240,255,.84);
+      border:1px solid transparent;
+      background: transparent;
+      transition: background .15s ease, border-color .15s ease, transform .15s ease;
+      margin-bottom: 8px;
+      font-weight: 700;
+      font-size: 13.5px;
+    }
+    .toc a:hover{background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.12); transform: translateY(-1px)}
+
+    .btn{
+      border:none;
+      border-radius: 14px;
+      padding: 12px 14px;
+      cursor:pointer;
+      font-weight:900;
+      letter-spacing:.2px;
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      border:1px solid rgba(255,255,255,.14);
+      transition: transform .15s ease, box-shadow .2s ease, background .15s ease;
+      display:inline-flex; align-items:center; gap:10px;
+      text-decoration:none;
+      user-select:none;
+      width:100%;
+      justify-content:center;
+      margin-top: 10px;
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.11); box-shadow: 0 18px 50px rgba(0,0,0,.35)}
+
+    .comment{
+      margin-top: 18px;
+      border-radius: var(--radius2);
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .comment-inner{padding: 20px}
+    .comment h2{margin-top: 0}
+
+    .form-grid{display:grid; grid-template-columns: 1fr 1fr; gap: 12px;}
+    @media (max-width: 720px){.form-grid{grid-template-columns:1fr}}
+
+    label{display:block; font-size: 12.8px; color: var(--muted); font-weight:800; margin-bottom: 6px}
+    input, textarea{
+      width:100%;
+      background: rgba(0,0,0,.15);
+      border:1px solid rgba(255,255,255,.14);
+      border-radius: 14px;
+      padding: 12px 12px;
+      color: var(--text);
+      outline:none;
+      transition: box-shadow .15s ease, border-color .15s ease;
+      font: inherit;
+    }
+    textarea{min-height: 110px; resize: vertical}
+    input:focus, textarea:focus{box-shadow: var(--ring); border-color: rgba(0,212,255,.35)}
+
+    .comment-list{margin-top: 14px}
+    .comment-item{
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.045);
+      padding: 12px;
+      margin: 10px 0;
+    }
+    .comment-item .top{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+    .comment-item .name{font-weight: 950}
+    .comment-item .when{color: var(--muted); font-size: 12.5px; font-weight:800}
+    .comment-item .body{margin-top: 8px; color: rgba(234,240,255,.82); line-height:1.6}
+
+    footer{padding: 26px 0 0; color: rgba(234,240,255,.6); font-size: 12.8px; text-align:center;}
+
+    a:focus, button:focus, input:focus, textarea:focus{outline:none; box-shadow: var(--ring)}
+
+    @media (prefers-reduced-motion: reduce){
+      .confetti i, .logo:after, .stat:after, .placeholder, .dot, .grid2 *{animation:none !important; transition:none !important}
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <div class="confetti" aria-hidden="true" id="confetti"></div>
+
+  <div class="wrap">
+    <header>
+      <div class="brand" aria-label="Marca do blog">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Caderno da Final</h1>
+          <p>Relato em primeira pessoa • Copa do Mundo</p>
+        </div>
+      </div>
+      <nav aria-label="Links rápidos">
+        <a class="pill" href="#cronologia"><span aria-hidden="true">🧠</span>Lance a lance</a>
+        <a class="pill" href="#depois"><span aria-hidden="true">🎖️</span>Pós-jogo</a>
+        <a class="pill" href="copa-jogos.html" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">↗</span>Ver jogos</a>
+      </nav>
+    </header>
+
+    <section class="hero" aria-label="Banner principal">
+      <div class="hero-inner">
+        <div>
+          <div class="kicker"><span class="dot" aria-hidden="true"></span> Da chegada ao apito inicial: um diário real</div>
+          <h2 class="title"><span class="gradient-text">Final da Copa do Mundo FIFA</span> — eu estive lá</h2>
+          <div class="meta" aria-label="Metadados do artigo">
+            <span class="chip">Publicado em: 18:45</span>
+            <span class="chip">Autor: “Eu” (relato presencial)</span>
+            <span class="chip">Formato: jornalismo + emoção</span>
+          </div>
+        </div>
+        <aside class="hero-quote">
+          <h3>Resumo do que eu vivi</h3>
+          <p>
+            Cheguei cedo, senti a cidade pulsar, vi a taça de perto — e depois transformei cada lance em
+            memória. Quando o estádio finalmente explodiu, eu entendi por que a Copa do Mundo é maior do que o futebol.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <main>
+      <article class="article" aria-label="Conteúdo do blog">
+        <div class="article-inner">
+          <div class="callout">
+            <strong>Nota editorial:</strong> este texto é um relato em primeira pessoa, realista e inspirado em
+            experiências típicas de finais de Copa. Elementos como imagens são ilustrativos.
+          </div>
+
+          <h2 id="cheguei">1) Cheguei à cidade-sede da final</h2>
+          <div class="img" role="img" aria-label="Imagem ilustrativa do aeroporto decorado">
+            <div class="placeholder">Imagem fictícia: “Aeroporto decorado com bandeiras das seleções”</div>
+            <div class="caption">O hall principal parecia um corredor de torcida: faixas, bandeiras, mascotes e telões com narrativas ao vivo.</div>
+          </div>
+          <p>
+            Eu desci do avião com a mesma sensação que sempre vem antes de um grande jogo: aquele frio na barriga que não é medo —
+            é antecipação. No aeroporto, logo na esteira, eu já via as bandeiras das seleções penduradas como se a cidade inteira estivesse
+            vestida para a final. Luzes de LED, painéis com cores alternando entre azul e dourado, e um som distante de batuques
+            misturando com a trilha oficial que eu tinha ouvido no rádio por semanas.
+          </p>
+          <p>
+            A decoração não era só enfeite. Ela marcava direção. Funcionários com credenciais e sorrisos treinados apontavam rotas para
+            transporte, hoteleiros e áreas de celebração. Em cada ponto do caminho, havia gente de países diferentes trocando
+            cartões, idiomas e abraços rápidos. Eu ouvi espanhol, português, inglês e até frases que pareciam mímicas.
+            Tudo parecia acontecer ao mesmo tempo.
+          </p>
+
+          <h3>Torcedores de todos os cantos</h3>
+          <p>
+            Do lado de fora, a movimentação já era de festa. Torcedores vindos de várias partes do mundo ocupavam as calçadas
+            como se a cidade tivesse virado um grande corredor de estádio. Alguns traziam bandeiras gigantes enroladas
+            com cuidado; outros exibiam tatuagens recentes, camisetas pintadas à mão e bandeirolas presas em mochilas.
+            Eu andava e, a cada esquina, alguém cantava um trecho diferente.
+          </p>
+
+          <div class="img" role="img" aria-label="Imagem fictícia: telões na cidade">
+            <div class="placeholder">Imagem fictícia: “Telões espalhados pelas ruas”</div>
+            <div class="caption">As praças ganhavam vida com projeções e imagens de bastidores — mesmo para quem só passava.</div>
+          </div>
+          <p>
+            Os telões eram o ponto de encontro. Em praças centrais, as telas gigantes exibiam campanhas, clipes históricos e
+            estatísticas em tempo real. Quando havia qualquer notícia — um treino aberto, um treinamento tático,
+            uma atualização de segurança — a cidade reagia como se estivesse assistindo a um jogo dentro do outro.
+          </p>
+
+          <h3>Clima de celebração nas ruas</h3>
+          <p>
+            Eu não tinha chegado “para ver” a final. Eu tinha chegado para participar dela. Nas ruas, grupos improvisavam
+            coreografias, crianças corriam atrás de bolas e, em intervalos curtos, as músicas oficiais eram puxadas como se
+            fosse um refrão da juventude.
+          </p>
+
+          <h3>Lojas oficiais da FIFA e merchandising</h3>
+          <p>
+            Passei por uma loja oficial da FIFA ainda cedo, antes do sol bater forte. O ambiente era impecável: vitrines com
+            bolas em destaque, camisas em caixas transparentes, coleções de edições especiais e lembranças com selos
+            de originalidade. Havia filas — não por obrigação, mas por curiosidade. Eu esperei alguns minutos,
+            toquei o tecido de uma camisa recém-entregue e senti aquele orgulho que só quem vive Copa entende:
+            a ideia de “levar um pedaço” do evento.
+          </p>
+
+          <h3>Restaurantes temáticos</h3>
+          <p>
+            À tarde, encontrei um restaurante temático com decoração de gramado e paredes que pareciam arquibancada.
+            Os pratos vinham com nomes inspirados em jogadas e fases: “triângulo”, “pressão alta”, “meia-lua”.
+            Nos telões internos, imagens de jogos marcantes faziam o clima crescer a cada gole.
+          </p>
+
+          <h3>Eventos para os fãs antes da partida</h3>
+          <p>
+            No fim da tarde, fui a um grande evento de fãs. Era uma sequência de performances, atividades para crianças,
+            apresentações culturais e transmissões em telões externos. Eu vi bandeiras sendo erguidas por quem
+            nunca se viu antes, mas que se reconheceu pelo mesmo motivo. Em alguns momentos, o som tremia no peito.
+          </p>
+
+          <div class="callout" role="note">
+            <strong>Estatística ilustrativa:</strong> a cidade costuma receber dezenas de milhares de visitantes nos dias da final,
+            com fluxo máximo no período da tarde e início da noite.
+          </div>
+
+          <h2>2) No dia anterior: o estádio e a taça de perto</h2>
+          <div class="grid2">
+            <div class="img" role="img" aria-label="Imagem fictícia: passeio no estádio">
+              <div class="placeholder">Imagem fictícia: “Visita ao estádio no dia anterior”</div>
+              <div class="caption">A sensação muda quando você está dentro. O ar tem cheiro de gramado e som distante.</div>
+            </div>
+            <div class="img" role="img" aria-label="Imagem fictícia: taça perto">
+              <div class="placeholder">Imagem fictícia: “A taça em exibição”</div>
+              <div class="caption">A proximidade não é só visual — é quase espiritual.</div>
+            </div>
+          </div>
+          <p>
+            No dia anterior, eu entrei no estádio com tempo. O acesso era controlado, e mesmo com a rotina organizada,
+            havia uma emoção coletiva. Corredores largos, placas de orientação, e um silêncio respeitoso que parecia preceder
+            o que viria no dia seguinte.
+          </p>
+          <p>
+            Quando cheguei perto da área reservada à taça, eu realmente parei. Eu não estava diante de um troféu.
+            Eu estava diante do símbolo de uma história que atravessa décadas, campeonatos e lágrimas.
+            Eu vi detalhes na pintura, no contorno, nas sombras sob a luz.
+            E senti uma coisa estranha: vontade de sussurrar.
+          </p>
+
+          <h3>Músicas ao redor do estádio e entrevistas rápidas</h3>
+          <p>
+            Enquanto eu caminhava, a trilha se misturava com músicas locais. Em alguns momentos, eu vi micro-entrevistas
+            sendo gravadas por emissoras: torcedores com voz embargada falando de família, de infância e de promessa.
+            Eu parei para ouvir uma conversa curta — um torcedor dizia que veio do outro lado do país para
+            ver “um capítulo que só acontece uma vez”.
+          </p>
+          <p>
+            Uma senhora, com cachecol e olhos brilhando, contou que aprendeu a cantar o hino com o pai.
+            Ela riu quando disseram que “hoje é o grande dia”. Eu anotei mentalmente a frase que mais ficou:
+            <em>“Hoje, a gente vira parte do mundo inteiro.”</em>
+          </p>
+
+          <h3>Fan fests e apresentações de abertura</h3>
+          <p>
+            Mais tarde, as fan fests tomaram conta das áreas externas. Luzes, DJs, telões, grupos de animação,
+            pintura facial e estandes de parceiros. O conjunto virava uma cena só: dança, canto, bandeiras balançando,
+            e uma expectativa que não deixava ninguém ficar parado.
+          </p>
+          <p>
+            As apresentações de abertura no estádio foram um espetáculo de engenharia e emoção.
+            Luzes em camadas, música crescendo como se a cidade respirasse no mesmo ritmo.
+            Eu vi a plateia reagir com cada troca de iluminação. Quando o som final abriu espaço para a torcida,
+            foi como se o estádio dissesse: <em>“agora começa de verdade.”</em>
+          </p>
+
+          <h2 id="diadafinal">3) No dia da final</h2>
+          <div class="callout"><strong>Horário local aproximado:</strong> eu deixei o hotel cedo, para que cada etapa tivesse tempo de absorção.</div>
+
+          <h3>Trajeto até o estádio</h3>
+          <p>
+            Eu peguei um transporte com antecedência. Nas ruas, o fluxo era constante. Muita gente já usava o tom certo
+            da camisa, a cor certa da bandeira e a expressão certa de quem acordou acreditando.
+            A cada quarteirão, mais barulho. A cada semáforo, mais risos e mais flashes.
+          </p>
+
+          <h3>Filas, entrada e segurança</h3>
+          <p>
+            As filas de entrada eram longas, mas o controle era firme e organizado. A segurança checava objetos,
+            orientava rotas e mantinha o clima sob controle.
+            Mesmo com revistas detalhadas, a energia não diminuía — parecia que o atraso era só parte da festa.
+          </p>
+
+          <h3>Encontrar meu assento</h3>
+          <p>
+            Quando finalmente me direcionaram para a área correta, eu subi escadas que pareciam intermináveis.
+            A cada degrau, o som ficava diferente, mais amplo.
+            O estádio começou a se revelar de cima: um mar de pessoas, cor e bandeiras.
+          </p>
+
+          <div class="img" role="img" aria-label="Imagem fictícia: vista panorâmica do estádio lotado">
+            <div class="placeholder">Imagem fictícia: “Panorâmica do estádio lotado”</div>
+            <div class="caption">O tamanho do palco te obriga a desacelerar. É possível ouvir vibração.</div>
+          </div>
+
+          <h3>Mosaicos feitos pelos torcedores</h3>
+          <p>
+            Antes do jogo começar, o mosaico surgiu como mágica: cartolinas coordenadas, cores sincronizadas,
+            um desenho que só fazia sentido quando visto de longe.
+            Eu levantei o celular, mas a verdade é que eu queria guardar aquilo com os olhos, não com a tela.
+          </p>
+
+          <h3>Entrada das seleções, hino nacional e fogos</h3>
+          <p>
+            A entrada das seleções foi exatamente como eu imaginava e ainda mais intensa. O passo firme dos jogadores,
+            o brilho nos uniformes sob as luzes do estádio e o som da torcida crescendo em ondas.
+            Quando os hinos começaram, foi impossível não sentir arrepio.
+          </p>
+          <p>
+            Os fogos de artifício estouraram no céu em sequência: primeiro clarões, depois fumaça,
+            depois o impacto que faz o corpo lembrar que aquilo é real.
+          </p>
+
+          <h3>Tensão antes do apito inicial</h3>
+          <p>
+            Nos minutos finais, a tensão era palpável. Ninguém parecia “assistir” — todo mundo parecia “participar”.
+            Eu senti meu coração acelerar junto com a torcida.
+            E quando o árbitro apitou, eu entendi: a Copa não é só um evento. É uma decisão coletiva.
+          </p>
+
+          <h2 id="cronologia">4) Lance a lance: o jogo como eu vi</h2>
+          <div class="stats" aria-label="Estatísticas da partida (ilustrativas)">
+            <div class="stat"><div class="num">xG alto</div><div class="lbl">Momentos de pressão alternada (relato)</div></div>
+            <div class="stat"><div class="num">x Cartões</div><div class="lbl">Disputa intensa no meio e alertas do árbitro</div></div>
+            <div class="stat"><div class="num">1 prorrogação</div><div class="lbl">Tensão até o fim (conforme narrativa do relato)</div></div>
+            <div class="stat"><div class="num">Pênaltis</div><div class="lbl">Decisão no detalhe e na coragem</div></div>
+          </div>
+
+          <div class="timeline" aria-label="Cronologia do jogo">
+            <div class="item"><div class="time">01’</div><div class="txt">A primeira troca de passes já avisou o ritmo: controle curto, compactação e muita atenção nas linhas. A torcida acompanha cada avanço com um “uh!” coletivo, como se o estádio aprendesse o jogo junto.</div></div>
+            <div class="item"><div class="time">07’</div><div class="txt">Um chute de fora da área chama o goleiro. A defesa saca a bola com mão firme, e o repique da arquibancada parece dobrar o som. Eu anoto mentalmente: ali começa a história de defesas.</div></div>
+            <div class="item"><div class="time">14’</div><div class="txt">Pressão alta! O time forca erro de saída e rouba perto do meio. O passe final sai atrasado por pouco, e eu sinto o estádio quase “engasgar” — aquela fração de segundo em que a esperança quase vira gol.</div></div>
+            <div class="item"><div class="time">22’</div><div class="txt">Cartão amarelo. O árbitro sinaliza falta tática para interromper contra-ataque. A torcida reage com vaias rápidas, mas a partida segue com intensidade, como se o gol estivesse escondido atrás de cada tentativa.</div></div>
+            <div class="item"><div class="time">29’</div><div class="txt">Grande oportunidade! Um cruzamento na medida encontra o atacante livre, mas o goleiro faz uma defesa em reflexo, esticando o corpo na hora exata. Foi daquelas defesas que você vê e, mesmo assim, não acredita.</div></div>
+            <div class="item"><div class="time">36’</div><div class="txt">O jogo muda de cor: mais disputas no alto, mais saltos. Eu ouço a respiração dos torcedores como um ruído único. Quando a bola chega, o estádio se inclina.</div></div>
+            <div class="item"><div class="time">42’</div><div class="txt">Outra chance! Rebote na área e a bola quase entra, mas a zaga aparece como último “seguro”. O público reage com um “caramba!” que foi quase coletivo.</div></div>
+
+            <div class="item"><div class="time">49’</div><div class="txt">No retorno do intervalo, o time acelera. Pressão novamente pelo corredor. Um drible mata o primeiro marcador, e o chute sai perigoso — mas o goleiro espalma com autoridade.</div></div>
+            <div class="item"><div class="time">57’</div><div class="txt">Gol! Finalmente a rede balança após uma jogada construída em ritmo. Eu levanto do assento sem pensar. O som de gol entra como onda: gritos, abraços, explosão de bandeiras.</div></div>
+            <div class="item"><div class="time">65’</div><div class="txt">Resposta imediata: contra-ataque com velocidade. O segundo gol do time surge com a bola chegando no momento certo para finalizar com calma. A torcida oposta também vira estádio.</div></div>
+            <div class="item"><div class="time">73’</div><div class="txt">Cartão amarelo para outra falta perigosa. O árbitro mantém a partida controlada, mas a tensão cresce. Eu sinto que qualquer deslize vira oportunidade.</div></div>
+            <div class="item"><div class="time">81’</div><div class="txt">Defesa absurda: um cabeceio rasteiro, quase no canto, e o goleiro faz a intervenção com a mão esticada. A bola toca de leve e sai. O estádio vibra como se fosse possível “repetir” a jogada só com energia.</div></div>
+            <div class="item"><div class="time">90’+2</div><div class="txt">Final do tempo normal com tensão máxima. As duas equipes parecem segurar o próprio fôlego. O empate se sustenta até o último segundo — e a prorrogação vira inevitável.</div></div>
+
+            <div class="item"><div class="time">98’</div><div class="txt">Prorrogação começa com maior espaço, mas também com mais cansaço. O time tenta controlar o ritmo para não entregar. A torcida canta mais alto do que o som da bola.</div></div>
+            <div class="item"><div class="time">106’</div><div class="txt">Substituições agressivas. Eu vejo corpos mudando de postura: quem chega para pressionar, quem busca dar segurança. É um xadrez vivo.</div></div>
+            <div class="item"><div class="time">112’</div><div class="txt">Uma finalização de fora! O goleiro vai à foto e bloqueia com os braços — e o impacto da defesa se transforma em grito coletivo. A partida começa a parecer feita para testar crença.</div></div>
+            <div class="item"><div class="time">120’</div><div class="txt">Fim da prorrogação sem vencedor. A torcida não sabe se consola ou se desespera: ela só sabe que a decisão será nos pênaltis.</div></div>
+
+            <div class="item"><div class="time">P1</div><div class="txt">Pênalti 1: bola bate com força. O estádio explode, mas o goleiro ainda tem olhos atentos. A vibração já antecipa o próximo erro — ou acerto.</div></div>
+            <div class="item"><div class="time">P2</div><div class="txt">Batedor tenta efeito. O goleiro defende no reflexo. Foi um momento de silêncio no meio do barulho.</div></div>
+            <div class="item"><div class="time">P3</div><div class="txt">O terceiro pênalti entra. Eu sinto o estádio “respirar” junto, como se aquele gol fosse um alívio antes do sufoco final.</div></div>
+            <div class="item"><div class="time">P4</div><div class="txt">Defesa novamente! O goleiro vira herói. As pessoas que antes cantavam agora rezam em voz alta.</div></div>
+            <div class="item"><div class="time">Último</div><div class="txt">O último pênalti é convertido com calma. Quando a bola ultrapassa a linha, o mundo vira festa instantânea. Eu abraço um desconhecido que eu nem sabia que existia — e ele abraça de volta.</div></div>
+          </div>
+
+          <div class="callout">
+            <strong>Citação de arquibancada (como eu ouvi):</strong> “Não é só sobre vencer. É sobre aguentar junto.”
+          </div>
+
+          <h2 id="depois">5) Depois do jogo: premiação, papel picado e retorno</h2>
+          <div class="img" role="img" aria-label="Imagem fictícia: cerimônia de premiação">
+            <div class="placeholder">Imagem fictícia: “Cerimônia de premiação”</div>
+            <div class="caption">Quando a taça aparece, a arquibancada vira um só coração.</div>
+          </div>
+
+          <h3>Cerimônia de premiação</h3>
+          <p>
+            A cerimônia foi lenta o suficiente para eu entender que aquele momento não tinha pressa.
+            Quando os jogadores se aproximaram, eu vi no rosto deles o misto de exaustão e incredulidade.
+            O vencedor levantou a taça com a postura de quem segurava um sonho há anos.
+          </p>
+          <p>
+            A chuva de papel picado começou em ondas. Primeiro um ruído seco, depois uma avalanche de cor.
+            A fumaça subiu e as luzes do estádio transformaram tudo em um quadro. Os fogos de artifício explodiram novamente,
+            e a cidade, que já estava em festa, pareceu ganhar volume.
+          </p>
+
+          <h3>Comemorações nas ruas</h3>
+          <p>
+            Eu saí do estádio sem pressa — e é difícil explicar sem parecer exagero: era como se o tempo tivesse mudado.
+            Nas ruas, os carros buzinavam, as pessoas dançavam em círculos e a cada esquina eu via alguém com
+            o rosto pintado, chorando e rindo ao mesmo tempo.
+          </p>
+
+          <h3>Retorno ao hotel</h3>
+          <p>
+            Voltar ao hotel foi o trecho mais humano da viagem. No transporte, a cidade ainda cantava.
+            Eu olhei pela janela e pensei em como, mesmo com barulho, todo mundo parecia estar em paz.
+            No quarto, quando sentei na cama, eu percebi que minhas mãos tremiam.
+            Não era só cansaço. Era a descarga de emoção.
+          </p>
+
+          <h3>O que ficou em mim</h3>
+          <p>
+            Ao apagar as luzes, eu entendi que tinha vivido um dos maiores eventos esportivos do planeta.
+            Não pelo placar ou pelos lances isolados — mas pela soma de detalhes: o cheiro das ruas,
+            o som dos hinos, a taça de perto, o mosaico na arquibancada e a coragem de quem cantou até o último minuto.
+          </p>
+
+          <div class="callout">
+            <strong>Resumo em 10 segundos:</strong> cheguei em festa, respirei estádio, vi a taça, vivi o jogo sem piscar,
+            e saí das ruas com a sensação de que o futebol consegue unir mundos.
+          </div>
+        </div>
+      </article>
+
+      <aside class="sidebar" aria-label="Barra lateral">
+        <div class="side-inner">
+          <h3 class="side-title">Navegação do artigo</h3>
+          <div class="toc" role="navigation" aria-label="Sumário">
+            <a href="#cheguei">1) Cheguei à cidade</a>
+            <a href="#diadafinal">2) Dia da final</a>
+            <a href="#cronologia">3) Lance a lance</a>
+            <a href="#depois">4) Pós-jogo</a>
+          </div>
+
+          <h3 class="side-title" style="margin-top:18px">Caixa de curiosidades</h3>
+          <div class="callout">
+            <p style="margin:0 0 10px"><strong>Detalhe que ninguém esquece:</strong> a primeira vez que você escuta o hino ao vivo.</p>
+            <p style="margin:0"><strong>O que eu notei:</strong> as torcidas cantam em “ondas”, como se a arquibancada tivesse batimentos.</p>
+          </div>
+
+          <a class="btn" href="#" id="btnShare"><span aria-hidden="true">🔗</span>Compartilhar (link do artigo)</a>
+        </div>
+      </aside>
+    </main>
+
+    <section class="comment" aria-label="Comentários">
+      <div class="comment-inner">
+        <h2>Comentários</h2>
+        <p style="margin-top:-6px;color:var(--muted)">
+          Espaço para você registrar sua torcida. (Demonstração: os comentários ficam no seu navegador.)
+        </p>
+
+        <form id="commentForm">
+          <div class="form-grid">
+            <div>
+              <label for="name">Seu nome</label>
+              <input id="name" name="name" placeholder="Ex.: Lucas" required />
+            </div>
+            <div>
+              <label for="team">Time / País</label>
+              <input id="team" name="team" placeholder="Ex.: Seleção Azul" required />
+            </div>
+          </div>
+          <div style="margin-top:12px">
+            <label for="body">Seu comentário</label>
+            <textarea id="body" name="body" placeholder="Escreva o que você sentiu ao ler..." required></textarea>
+          </div>
+          <button class="btn" type="submit"><span aria-hidden="true">💬</span>Publicar comentário</button>
+        </form>
+
+        <div class="comment-list" id="commentList" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <footer>
+      Projeto demonstrativo (HTML/CSS/JS). Texto é relato em primeira pessoa, com imagens e algumas estatísticas ilustrativas.
+    </footer>
+  </div>
+
+  <script>
+    // Confetti (leve e bonito)
+    const confetti = document.getElementById('confetti');
+    const count = 28;
+    const colors = ['var(--brand1)','var(--brand2)','var(--brand3)'];
+    for(let i=0;i<count;i++){
+      const el = document.createElement('i');
+      const left = Math.random()*100;
+      const dur = (7 + Math.random()*8).toFixed(2) + 's';
+      const drift = (Math.random()*46 - 23).toFixed(1) + 'px';
+      const w = (7 + Math.random()*9).toFixed(0) + 'px';
+      const h = (10 + Math.random()*12).toFixed(0) + 'px';
+      const bg = `linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,0)), radial-gradient(circle at 20% 10%, ${colors[i%colors.length]}, transparent 55%)`;
+      el.style.left = left + '%';
+      el.style.setProperty('--dur', dur);
+      el.style.setProperty('--drift', drift);
+      el.style.width = w;
+      el.style.height = h;
+      el.style.top = (-120 - Math.random()*260) + 'px';
+      el.style.background = bg;
+      el.style.animationDelay = (-Math.random()*8) + 's';
+      confetti.appendChild(el);
+    }
+
+    // Share
+    const btnShare = document.getElementById('btnShare');
+    btnShare.addEventListener('click', async (e)=>{
+      e.preventDefault();
+      const url = location.href;
+      try{
+        if(navigator.share){
+          await navigator.share({ title: document.title, url });
+          return;
+        }
+      }catch(_e){}
+      try{
+        await navigator.clipboard.writeText(url);
+        btnShare.textContent = 'Link copiado!';
+        setTimeout(()=>btnShare.innerHTML = '<span aria-hidden="true">🔗</span>Compartilhar (link do artigo)', 1600);
+      }catch(_e){
+        alert('Copie este link: ' + url);
+      }
+    });
+
+    // Comments (localStorage)
+    const STORAGE_KEY = 'copa_blog_comments_v1';
+    const form = document.getElementById('commentForm');
+    const list = document.getElementById('commentList');
+
+    function escapeHtml(str){
+      return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'<','>':'>','"':'"',"'":'&#39;'}[c]));
+    }
+
+    function formatDate(d){
+      return new Date(d).toLocaleString('pt-BR', { dateStyle:'medium', timeStyle:'short' });
+    }
+
+    function render(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const comments = raw ? JSON.parse(raw) : [];
+      list.innerHTML = '';
+      if(comments.length === 0){
+        const empty = document.createElement('div');
+        empty.className = 'comment-item';
+        empty.innerHTML = '<div class="top"><div class="name">Sem comentários ainda</div><div class="when">—</div></div><div class="body">Seja o primeiro a registrar sua emoção.</div>';
+        list.appendChild(empty);
+        return;
+      }
+
+      comments.slice().reverse().forEach(c => {
+        const el = document.createElement('div');
+        el.className = 'comment-item';
+        el.innerHTML = `
+          <div class="top">
+            <div class="name">${escapeHtml(c.name)} • ${escapeHtml(c.team)}</div>
+            <div class="when">${escapeHtml(formatDate(c.when))}</div>
+          </div>
+          <div class="body">${escapeHtml(c.body).replace(/\n/g,'<br/>')}</div>
+        `;
+        list.appendChild(el);
+      });
+    }
+
+    form.addEventListener('submit', (ev)=>{
+      ev.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const team = document.getElementById('team').value.trim();
+      const body = document.getElementById('body').value.trim();
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const comments = raw ? JSON.parse(raw) : [];
+
+      comments.push({ name, team, body, when: Date.now() });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(comments));
+
+      form.reset();
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
+
